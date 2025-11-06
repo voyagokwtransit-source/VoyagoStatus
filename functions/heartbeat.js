@@ -5,7 +5,7 @@ exports.handler = async function(event, context) {
     "Midtown": "435397",
     "Chicopee": "435398",
     "Midtown-to-Queens": "435399",
-    "Bramm-All-Day": "HEARTBEAT_ID_4",
+    "Bramm-All-Day": "hLRVaemwMfEXJ5qSXxJ2TK2Cd",
     "Bramm AM Peak": "435400",
     "Bramm PM Peak": "435395"
   };
@@ -45,3 +45,4 @@ exports.handler = async function(event, context) {
     body: JSON.stringify(results)
   };
 };
+
