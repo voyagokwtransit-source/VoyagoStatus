@@ -5,10 +5,12 @@ exports.handler = async function(event, context) {
     "Midtown": "435397",
     "Chicopee": "435398",
     "Midtown-to-Queens": "435399",
-    "Bramm-All-Day": "hLRVaemwMfEXJ5qSXxJ2TK2Cd",
+    "Bramm-All-Day": "LRVaemwMfEXJ5qSXxJ2TK2Cd",
     "Bramm AM Peak": "435400",
     "Bramm PM Peak": "435395"
   };
+
+  
 
  const apiToken = process.env.BETTERUPTIME_TOKEN;
   if (!apiToken) {
@@ -23,7 +25,8 @@ exports.handler = async function(event, context) {
 
   for (const [name, id] of Object.entries(heartbeatIds)) {
     try {
-      const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
+    //  const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
+        const res = await fetch(`https://uptime.betterstack.com/api/v1/heartbeat/${id}`, {
         headers: { Authorization: `Bearer ${apiToken}` }
       });
 
@@ -45,4 +48,5 @@ exports.handler = async function(event, context) {
     body: JSON.stringify(results)
   };
 };
+
 
