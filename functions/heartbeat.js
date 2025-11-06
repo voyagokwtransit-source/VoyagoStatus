@@ -1,24 +1,17 @@
-const fetch = require("node-fetch"); // CommonJS style for Netlify
+// heartbeat.js
+// Works on Netlify with Node 22+ using native fetch
 
 exports.handler = async function(event, context) {
-/* const heartbeatIds = {
-    "Midtown": "435397",
-    "Chicopee": "435398",
-    "Midtown-to-Queens": "435399",
-    "Bramm-All-Day": "LRVaemwMfEXJ5qSXxJ2TK2Cd",
-    "Bramm AM Peak": "435400",
-    "Bramm PM Peak": "435395"   */
   const heartbeatIds = {
-  "Midtown": "435395",
-  "Chicopee": "435395",
-  "Midtown-to-Queens": "435395",
-  "Bramm-All-Day": "435395",
-  "Bramm AM Peak": "435395",
-  "Bramm PM Peak": "LRVaemwMfEXJ5qSXxJ2TK2Cd"
-
+    "Midtown": "435395",
+    "Chicopee": "435395",
+    "Midtown-to-Queens": "435395",
+    "Bramm-All-Day": "435395",
+    "Bramm AM Peak": "435395",
+    "Bramm PM Peak": "LRVaemwMfEXJ5qSXxJ2TK2Cd"
   };
 
-const apiToken = process.env.BETTERUPTIME_TOKEN;
+  const apiToken = process.env.BETTERUPTIME_TOKEN;
   if (!apiToken) {
     return {
       statusCode: 500,
@@ -31,7 +24,7 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
 
   for (const [name, id] of Object.entries(heartbeatIds)) {
     try {
-      console.log(`Fetching ${name}: https://uptime.betterstack.com/api/v2/heartbeats/${id}`);
+      console.log(`Fetching ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
       const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
         headers: { Authorization: `Bearer ${apiToken}` }
       });
@@ -43,6 +36,7 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
       }
 
       const data = await res.json();
+      // last_status can be "up", "down", etc.
       results.push({ name, status: data.last_status || "unknown" });
 
     } catch (err) {
@@ -51,19 +45,12 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
     }
   }
 
-  // NO references to 'name' outside of the loop
   return {
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*"  // CORS header for browser access
     },
     body: JSON.stringify(results)
   };
 };
-
-
-
-
-
-
