@@ -66,6 +66,7 @@ for (const [name, id] of Object.entries(heartbeatIds)) {
 };
 
 
+console.log(`Fetching heartbeat ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
 
 
 
