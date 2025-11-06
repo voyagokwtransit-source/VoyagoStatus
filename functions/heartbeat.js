@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
 export async function handler() {
   const heartbeatIds = {
@@ -18,9 +18,13 @@ export async function handler() {
       const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
         headers: { Authorization: `Bearer ${apiToken}` }
       });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
       const data = await res.json();
       results.push({ name, status: data.last_status });
-    } catch {
+    } catch (err) {
+      console.error(`Error fetching ${name}:`, err.message);
       results.push({ name, status: "unknown" });
     }
   }
@@ -30,4 +34,4 @@ export async function handler() {
     headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
     body: JSON.stringify(results)
   };
-}
+};
