@@ -24,8 +24,8 @@ exports.handler = async function(event, context) {
 
   for (const [name, id] of Object.entries(heartbeatIds)) {
     try {
-      console.log(`Fetching ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
-      const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
+      console.log(`Fetching ${name}: https://uptime.betterstack.com/api/v2/heartbeats/${id}`);
+      const res = await fetch(`https://uptime.betterstack.com/api/v2/heartbeats/${id}`, {
         headers: { Authorization: `Bearer ${apiToken}` }
       });
 
@@ -54,4 +54,5 @@ exports.handler = async function(event, context) {
     body: JSON.stringify(results)
   };
 };
+
 
