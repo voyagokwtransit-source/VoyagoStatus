@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Driver Services Status</title>
+  <style>
+    body { font-family: sans-serif; background: #f7f7f7; padding: 20px; text-align: center; }
+    h1 { margin-bottom: 20px; }
+    .service { padding: 12px; margin: 8px auto; border-radius: 6px; color: #fff; width: 300px; font-weight: bold; font-size: 1.1em; }
+    .up { background-color: #4caf50; }
+    .down { background-color: #f44336; }
+    .unknown { background-color: #9e9e9e; }
+  </style>
+</head>
+<body>
+  <h1>Driver Services Status</h1>
+  <div id="status-container"></div>
+
+  <script>
+    const container = document.getElementById("status-container");
+    const proxyUrl = "https://YOUR_NETLIFY_SITE/.netlify/functions/heartbeat"; // replace later
+
+    async function updateStatus() {
+      container.innerHTML = "";
+      try {
+        const res = await fetch(proxyUrl);
+        const data = await res.json();
+
+        data.forEach(service => {
+          const div = document.createElement("div");
+          div.className = `service ${service.status}`;
+          div.textContent = `${service.name}: ${service.status.toUpperCase()}`;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = "<p>Error fetching status.</p>";
+        console.error(err);
+      }
+    }
+
+    updateStatus();
+    setInterval(updateStatus, 60000);
+  </script>
+</body>
+</html>
