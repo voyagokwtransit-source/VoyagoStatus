@@ -19,9 +19,7 @@ exports.handler = async function(event, context) {
   };
   
 
-  
-
- const apiToken = process.env.BETTERUPTIME_TOKEN;
+const apiToken = process.env.BETTERUPTIME_TOKEN;
   if (!apiToken) {
     return {
       statusCode: 500,
@@ -30,29 +28,31 @@ exports.handler = async function(event, context) {
     };
   }
 
-const results = [];
+  const results = [];
 
-for (const [name, id] of Object.entries(heartbeatIds)) {
-  try {
-    console.log(`Fetching heartbeat ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
+  for (const [name, id] of Object.entries(heartbeatIds)) {
+    try {
+      console.log(`Fetching ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
+      const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
+        headers: { Authorization: `Bearer ${apiToken}` }
+      });
 
-    const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
-      headers: { Authorization: `Bearer ${apiToken}` }
-    });
+      if (!res.ok) {
+        console.error(`${name} returned status ${res.status}`);
+        results.push({ name, status: "unknown" });
+        continue;
+      }
 
-    console.log(`${name} status code: ${res.status}`);
+      const data = await res.json();
+      results.push({ name, status: data.last_status || "unknown" });
 
-    const data = await res.json();
-    console.log(`${name} response:`, data);
-
-    results.push({ name, status: data.last_status || "unknown" });
-  } catch (err) {
-    console.error(`Error fetching ${name}:`, err.message);
-    results.push({ name, status: "unknown" });
+    } catch (err) {
+      console.error(`Error fetching ${name}:`, err.message);
+      results.push({ name, status: "unknown" });
+    }
   }
-}
 
-
+  // NO references to 'name' outside of the loop
   return {
     statusCode: 200,
     headers: {
@@ -62,10 +62,6 @@ for (const [name, id] of Object.entries(heartbeatIds)) {
     body: JSON.stringify(results)
   };
 };
-
-
-console.log(`Fetching heartbeat ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
-
 
 
 
