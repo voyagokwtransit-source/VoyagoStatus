@@ -17,7 +17,7 @@ exports.handler = async function(event, context) {
   "Bramm PM Peak": "LRVaemwMfEXJ5qSXxJ2TK2Cd"
 
   };
-  
+  https://uptime.betterstack.com/api/v1/heartbeat/LRVaemwMfEXJ5qSXxJ2TK2Cd
 
 const apiToken = process.env.BETTERUPTIME_TOKEN;
   if (!apiToken) {
@@ -32,7 +32,7 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
 
   for (const [name, id] of Object.entries(heartbeatIds)) {
     try {
-      console.log(`Fetching ${name}: https://api.betteruptime.com/v2/heartbeats/${id}`);
+      console.log(`Fetching ${name}: https://uptime.betterstack.com/api/v2/heartbeats/${id}`);
       const res = await fetch(`https://api.betteruptime.com/v2/heartbeats/${id}`, {
         headers: { Authorization: `Bearer ${apiToken}` }
       });
@@ -62,6 +62,7 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
     body: JSON.stringify(results)
   };
 };
+
 
 
 
