@@ -17,7 +17,6 @@ exports.handler = async function(event, context) {
   "Bramm PM Peak": "LRVaemwMfEXJ5qSXxJ2TK2Cd"
 
   };
-  https://uptime.betterstack.com/api/v1/heartbeat/LRVaemwMfEXJ5qSXxJ2TK2Cd
 
 const apiToken = process.env.BETTERUPTIME_TOKEN;
   if (!apiToken) {
@@ -62,6 +61,7 @@ const apiToken = process.env.BETTERUPTIME_TOKEN;
     body: JSON.stringify(results)
   };
 };
+
 
 
 
